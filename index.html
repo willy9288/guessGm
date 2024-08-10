@@ -44,6 +44,7 @@
 </head>
 
 <body>
+    <img height="200px" src="image/images.jfif" alt="">
     <h1>猜數字挑戰賽!!!</h1>
     <div class="tips">遊戲說明:</div>
     <br>
@@ -55,12 +56,26 @@
     <div id="rslt"></div>
     <button id="rstrt">重新開始</button>
     <h3 id="gss-cnt"></h3>
+    <hr>
+    <div style="background-color: aqua;color: antiquewhite;padding: 2px 0;">遊戲紀錄:</div>
+    <p id="rcords"></p>
 
     <script>
+        function showRcords() {
+            rcordsEl.innerHTML = "";
+            for (let i = 0; i < rcords.length; i++) {
+                rcordsEl.innerHTML += `
+                <hr>
+                <div>時間:${rcords[i][0]}<br>
+                    遊戲結果:${rcords[i][1]}<br>
+                    次數:${rcords[i][2]}次
+                </div>
+                `;
+            }
+        }
         function answer() {
             // 判斷遊戲次數
             if (cnt == maxCnt) {
-                rsltEl.innerHTML = "請重新開始";
                 return;
             }
             let num = nmbrEl.value;
@@ -92,6 +107,10 @@
                 // alert("猜對了!!!");
                 // rsltEl.innerHTML += "猜對了!!!<br>";
                 rsltEl.innerHTML = "猜對了!!!";
+                rstrtBtnEl.disabled = false;
+                rcords.push([new Date().toLocaleString(), "猜對了", cnt]);
+                showRcords();
+
             } else {
                 // 提示猜錯次數
                 gssCntEl.innerHTML = `猜錯 ${cnt}次!`
@@ -99,6 +118,10 @@
                 // 5次結束後公佈答案
                 if (cnt == maxCnt) {
                     rsltEl.innerHTML = `遊戲結束<br>答案為:${cmptr}`;
+                    rsltEl.innerHTML += "<br>請重新開始";
+                    rstrtBtnEl.disabled = false;
+                    rcords.push([new Date().toLocaleString(), "猜錯了", cnt]);
+                    showRcords();
                 }
                 else if (num > cmptr) {
                     // alert("猜低一點!");
@@ -118,6 +141,9 @@
         const rsltEl = document.querySelector("#rslt");
         const gssCntEl = document.querySelector("#gss-cnt");
         const rstrtBtnEl = document.querySelector("#rstrt");
+        const rcordsEl = document.querySelector("#rcords");
+
+        rstrtBtnEl.disabled = true;
 
         rstrtBtnEl.addEventListener("click", () => {
             cnt = 0;
@@ -130,9 +156,35 @@
         let cnt = 0;
 
         // 電腦給的值
-        let cmptr = 50;
+        let cmptr = getRndmInt(1, 50);
 
-        console.log(nmbrEl, answrEl, rsltEl);
+        console.log(rcordsEl, cmptr, nmbrEl, answrEl, rsltEl);
+
+        // 遊玩時間, 猜對, 次數 
+        let rcords = []; // Array()
+
+        // console.log(new Date().toLocaleString());
+        // rcords.push(["2024/08/10 16:00:00", "答對了", "3次"]);
+        // console.log(rcords);
+        // console.log(rcords.length);
+        // for (let i = 0; i < rcords.length; i++) {
+        //     console.log(rcords[i][0]);
+        // }
+
+        // let x = 6.8;
+        // console.log(x, Math.floor(x), Math.ceil(x));
+        // // 0~9 ->10~100
+        // console.log(Math.floor(Math.random() * 10) + 1);
+
+        // console.log("---------------------")
+        // for (let i = 0; i < 10; i++) {
+        //     console.log(getRndmInt(0, 10));
+        // }
+        // 產生亂數
+        function getRndmInt(strt, end) {
+            return Math.floor(Math.random() * (end - strt + 1)) + strt;
+        }
+
     </script>
 
 
