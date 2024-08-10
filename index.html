@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜數字挑戰賽</title>
+    <style>
+        body {
+            background-color: lightcyan;
+            text-align: center;
+        }
+
+        #rslt {
+            background-color: antiquewhite;
+            width: 300px;
+            padding: 80px 0;
+            margin: 12px auto;
+            border-radius: 12px;
+            border: 1px black solid;
+            text-align: center;
+        }
+
+        .tips {
+            display: inline-block;
+            background-color: brown;
+            color: aliceblue;
+            padding: 3px 3px;
+            font-size: 16px;
+        }
+
+        #rstrt {
+            border: 0px;
+            background-color: plum;
+            color: black;
+            padding: 6px 6px;
+            border-radius: 3px;
+        }
+
+        input {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>猜數字挑戰賽!!!</h1>
+    <div class="tips">遊戲說明:</div>
+    <br>
+    <p>請猜 1~50之間的數字,遊戲共有 5次機會 ^o^</p>
+
+    <label for="nmbr">請猜一個數字</label>
+    <input type="number" id="nmbr">
+    <button id="answr" onclick="answer()">送出</button>
+    <div id="rslt"></div>
+    <button id="rstrt">重新開始</button>
+    <h3 id="gss-cnt"></h3>
+
+    <script>
+        function answer() {
+            // 判斷遊戲次數
+            if (cnt == maxCnt) {
+                rsltEl.innerHTML = "請重新開始";
+                return;
+            }
+            let num = nmbrEl.value;
+            // alert("click!");
+            // 顯示輸入的數字
+            // alert(num);
+
+            // 判斷輸入不能為空
+            if (num == "") {
+                // alert("輸入不能為空!!!");
+                // rsltEl.innerHTML += "輸入不能為空!!!<br>";
+                rsltEl.innerHTML = "輸入不能為空!!!";
+                return;
+            }
+
+            // 判斷輸入範圍 1~50
+            if (num < 1 || num > 50) {
+                // alert("輸入範圍錯誤 (1~50之間)");
+                // rsltEl.innerHTML += "輸入範圍錯誤 (1~50之間)<br>";
+                rsltEl.innerHTML = "輸入範圍錯誤 (1~50之間)";
+                return;
+            }
+
+            // 次數累加
+            cnt++;
+
+            // 判斷是否猜對
+            if (num == cmptr) {
+                // alert("猜對了!!!");
+                // rsltEl.innerHTML += "猜對了!!!<br>";
+                rsltEl.innerHTML = "猜對了!!!";
+            } else {
+                // 提示猜錯次數
+                gssCntEl.innerHTML = `猜錯 ${cnt}次!`
+
+                // 5次結束後公佈答案
+                if (cnt == maxCnt) {
+                    rsltEl.innerHTML = `遊戲結束<br>答案為:${cmptr}`;
+                }
+                else if (num > cmptr) {
+                    // alert("猜低一點!");
+                    // rsltEl.innerHTML += "猜低一點!<br>";
+                    rsltEl.innerHTML = "猜低一點!";
+                } else {
+                    // alert("猜高一點!");
+                    // rsltEl.innerHTML += "猜高一點!<br>";
+                    rsltEl.innerHTML = "猜高一點!";
+                }
+            }
+
+        }
+
+        const nmbrEl = document.querySelector("#nmbr");
+        const answrEl = document.querySelector("#answr");
+        const rsltEl = document.querySelector("#rslt");
+        const gssCntEl = document.querySelector("#gss-cnt");
+        const rstrtBtnEl = document.querySelector("#rstrt");
+
+        rstrtBtnEl.addEventListener("click", () => {
+            cnt = 0;
+            rsltEl.innerHTML = "";
+            gssCntEl.innerHTML = "";
+            nmbrEl.value = "";
+        });
+
+        const maxCnt = 5;
+        let cnt = 0;
+
+        // 電腦給的值
+        let cmptr = 50;
+
+        console.log(nmbrEl, answrEl, rsltEl);
+    </script>
+
+
+</body>
+
+</html>
